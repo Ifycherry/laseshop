@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-export default function>() {
+export default function() {
   return (
     <>
     <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">

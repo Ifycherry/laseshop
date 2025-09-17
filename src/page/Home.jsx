@@ -6,14 +6,14 @@ import axios from 'axios';
 export default function Home() {
   const [products, setProducts] = useState([]);
 
-  useEffect(()=>{
-    const fetechData = async () => {
-      const response = await axios.get("http://laseappstore.test/api/allproduct");
-      setProducts(response.data.products);
+   useEffect(()=>{
+     const fetechData = async () => {
+       const response = await axios.get("http://laseappstore.test/api/allproduct");
+       setProducts(response.data.products);
 
-    }
-    fetechData();
-  }, [])
+     }
+     fetechData();
+   }, [])
   return (
     <>
     <Header/>

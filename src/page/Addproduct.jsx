@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 export default function Addproduct() {
 
+  //  calling the token and user info
   const authToken = localStorage.getItem('token');
 
   //const user = JSON.parse(localStorage.getItem('user'));
@@ -20,7 +21,7 @@ export default function Addproduct() {
     console.log(e.target.files);
     setImage(e.target.files[0]);
     setFile(URL.createObjectURL(e.target.files[0]));
-    // console.log(image)
+    console.log(image)
     // console.log(file)
   }
   
@@ -69,6 +70,7 @@ export default function Addproduct() {
     data.append("product_quantity", formData.product_quantity);
     data.append("product_image", image);
     console.log(data);
+    console.log(formData);
     
 
   
@@ -88,6 +90,26 @@ export default function Addproduct() {
 
     console.log(response);
     alert("Product Added Successfully");
+    setFormData({
+      product_name:"",
+      product_category:"",
+      initial_price:"",
+      selling_price:"",
+      product_description:"",
+      product_quantity:"",
+      product_image:"",
+    });
+    setFile(null);
+    setImage(null);
+    setError({
+      product_name:"",
+      product_category:"",
+      initial_price:"",
+      selling_price:"",
+      product_description:"",
+      product_quantity:"",
+      product_image:"",
+    });
     } catch (error) {
       console.log(error.response.data.errors);
       setError(error.response.data.errors);
@@ -99,16 +121,22 @@ export default function Addproduct() {
     <div className="flex flex-row">
     <DashboardSideBar />
     <main className="ml-64 p-5 max-w-screen-lg flex-wrap h-screen grow">
-      <form onSubmit={handleSubmit} encType="multipart/form-data" 
-      className="space-y-6">
+      <form 
+      onSubmit={handleSubmit} encType="multipart/form-data" 
+      className="space-y-6"
+      >
 
         <h1 className="text-3xl font-extrabold text-green-900">Add Product</h1>
 
         {/* {File Upload & Preview} */}
 
         <div>
-          <input type="file" onChange={handleUpload} className={"w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-7"} id="file_input" />
-          {/* <span className="text-red-500">{error.product_image[0]}</span> */}
+          <input 
+          type="file"
+           onChange={handleUpload} 
+           className={"w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-7"} id="file_input" 
+           />
+          <span className="text-red-500">{error.product_image[0]}</span> 
           {file && <img src={file} alt="Uploaded preview " />}
         </div>
 
@@ -125,6 +153,7 @@ export default function Addproduct() {
                 name="product_name"
                 onChange={handleChange}
                 placeholder="Product Name"
+                value={formData.product_name}
                  className="w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-1"
                 // className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-200 '} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`}
 
@@ -146,6 +175,7 @@ export default function Addproduct() {
                 name="product_category"
                 onChange={handleChange}
                 placeholder="Product Category"
+                value={formData.product_category}
                  className="w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-1"
                 // className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-200 '} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`}
 
@@ -167,6 +197,7 @@ export default function Addproduct() {
                 name="initial_price"
                 onChange={handleChange}
                 placeholder="Initial Price"
+                value={formData.initial_price}
                  className="w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-1"
                 // className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-200 '} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`}
 
@@ -188,6 +219,7 @@ export default function Addproduct() {
                 name="selling_price"
                 onChange={handleChange}
                 placeholder="Selling Price"
+                value={formData.selling_price}
                  className="w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-1"
                 // className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-200 '} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`}
 
@@ -209,6 +241,7 @@ export default function Addproduct() {
                 name="product_description"
                 onChange={handleChange}
                 placeholder="Product Description"
+                value={formData.product_description}
                  className="w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-1"
                 // className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-200 '} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`}
 
@@ -229,6 +262,7 @@ export default function Addproduct() {
                 name="product_quantity"
                 onChange={handleChange}
                 placeholder="Product Quantity"
+                value={formData.product_quantity}
                  className="w-full px-4 py-3 rounded-lg border border-gray-200 foc us:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 mt-1"
                 // className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-200 '} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`}
 
@@ -239,7 +273,8 @@ export default function Addproduct() {
 
         {/* submit button */}
         <div>
-              <button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3.5 rounded-lg duration-200 transform hover:scale-[1.01] shadow-md"
+              <button type="submit" 
+              className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3.5 rounded-lg duration-200 transform hover:scale-[1.01] shadow-md"
                         >
                 Add Product
               </button>
