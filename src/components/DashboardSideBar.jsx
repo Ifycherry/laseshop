@@ -12,8 +12,8 @@ export default function DashboardSideBar() {
 
     useEffect(()=>{
         // const user = Json.parse(localStorage.getItem(user));
-        if (!localStorage.getItem('user')) {
-            alert("You haven't login");
+        if (!localStorage.getItem('user')&& user.role ==='user') {
+            //alert("You haven't login");
             navigate('/login');
         }
     },[]);

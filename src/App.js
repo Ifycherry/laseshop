@@ -5,6 +5,8 @@ import Login from "./page/Login";
 import Dashboard from "./page/Dashboard";
 import Addproduct from "./page/Addproduct";
 import EmailVerify from "./page/EmailVerify";
+import AdminDashboard from "./page/Admin/AdminDashboard";
+import AdminUsers from "./page/Admin/AdminUsers";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
      <Route path="/login" element={<Login />} />
      <Route path="/email-verify" element={<EmailVerify />} />
      <Route path="/addproduct" element={<Addproduct />} />
+    <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+    <Route path="/admin/users" element={<AdminUsers/>}/>
     </Routes>
     </BrowserRouter>
     </>
