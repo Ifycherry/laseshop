@@ -1,119 +1,8 @@
-import React, { useState } from "react";
-import Header from "../components/Header";
-// import { useAuth } from "../context/AuthContext";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
-import {Link, useNavigate} from "react-router-dom";
+import React from 'react'
 
-
-
-export default function Login() {
-  //Capturing all user entries
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e)=> {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const navigate = useNavigate();
-  // console.log(formData)
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({})
-
-
-
-  // Validate User Entry
-    const ValidateForm = () => {
-      const newErrors = {};
-
-    // Validate firstname
-    // if(!formData.firstname.trim()) {
-    //   newErrors.firstname = "First name is required";
-    // }
-
-    // Validate lastname
-    // if(!formData.lastname.trim()) {
-    //   newErrors.lastname = "Last name is required";
-    // }
-
-    // // Validate email
-    if(!formData.email.trim()) {
-      newErrors.email = "email is required";
-      }
-    // // Validate password
-      if(!formData.password) {
-        newErrors.password = "password is required";
-    // } else if (formData.password !== formData.confirm_password) {
-    //   newErrors.password = "Password do not match";
-    //   newErrors.confirm_password = "Confirm Password do not match"
-     }
-
-    // // Validate confirm password
-    // if(!formData.confirm_password) {
-    //   newErrors.confirm_password = "Confirm Password is required";
-    // }
-
-    // // Validate phone number
-     //if(!formData.phone_number) {
-     //  newErrors.phone_number = "Phone Number is required";
-     //}
-
-    // Validate Role
-  //   if(!formData.role) {
-  //     newErrors.role = "Role is required";
-    // }
-    setErrors(newErrors);
-  //   console.log(newErrors);
-     return Object.keys(newErrors).length === 0;
-   }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-     if (!ValidateForm()) return
-
-  try{
-
-    await axios.get("http://laseappstore.test/sanctum/csrf-cookie");
-
-    const response = await axios.post("http://laseappstore.test/api/login", {
-      email: formData.email,
-      password: formData.password,
-    }) 
-    if(response.status === 200) {
-    console.log(response);
-    const {token, user} = response.data
-    //login(token,user)
-
-    //const token = response.data.token;
-    localStorage.setItem("token", token);
-    //localStorage.setItem("user", JSON.stringify(response.data.user));
-    localStorage.setItem("user", JSON.stringify(user));
-
-      setErrors("");
-      alert(response.data.message);
-      if (user.role === "vendor") {
-      navigate("/dashboard");
-      } else if (user.role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-      navigate('/');
-      }
-    }
-  } catch (error) {
-    setErrors(error.response.data.errors);
-    //alert(error.response.data.message);
-  }
-};
-  
+export default function ChangePassword() {
   return (
-    <>
+     <>
       <Header />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <form
@@ -197,5 +86,5 @@ export default function Login() {
         </form>
       </div>
     </>
-);
+  )
 }

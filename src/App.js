@@ -7,6 +7,8 @@ import Addproduct from "./page/Addproduct";
 import EmailVerify from "./page/EmailVerify";
 import AdminDashboard from "./page/Admin/AdminDashboard";
 import AdminUsers from "./page/Admin/AdminUsers";
+import AdminEditUser from "./page/AdminEditUser";
+import ForgetPassword from "./page/ForgetPassword";
 
 function App() {
   return (
@@ -19,10 +21,12 @@ function App() {
      <Route path="/register" element={<Register />} />
      <Route path="/Dashboard" element={<Dashboard />} />
      <Route path="/login" element={<Login />} />
+     <Route path="/forgetpassword" element={<ForgetPassword/>} />
      <Route path="/email-verify" element={<EmailVerify />} />
      <Route path="/addproduct" element={<Addproduct />} />
     <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
     <Route path="/admin/users" element={<AdminUsers/>}/>
+    <Route path="/admin/users/edit" element={<AdminEditUser />} />
     </Routes>
     </BrowserRouter>
     </>

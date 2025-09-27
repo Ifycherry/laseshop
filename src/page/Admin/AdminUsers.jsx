@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminSidebar from "../../components/Admin/AdminSidebar";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function AdminUsers() {
@@ -10,9 +11,9 @@ export default function AdminUsers() {
       const response = await axios.get(
         "http://laseappstore.test/api/getusers",
         {
-          // headers: {
-          //   Authorization: `Bearer ${authToken}`,
-          // },
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         },
       );
       console.log(response)
@@ -202,12 +203,11 @@ export default function AdminUsers() {
                     </div>
                   </td>
                   <td class="px-6 py-4">
-                    <a
-                      href="#"
+                    <Link to={`/admin/users/edit?id=${user.id}`}
                       class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
                       Edit user
-                    </a>
+                    </Link>
                    {/* </td> 
                 </tr>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
