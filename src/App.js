@@ -9,6 +9,8 @@ import AdminDashboard from "./page/Admin/AdminDashboard";
 import AdminUsers from "./page/Admin/AdminUsers";
 import AdminEditUser from "./page/AdminEditUser";
 import ForgetPassword from "./page/ForgetPassword";
+import ChangePassword from "./page/ChangePassword";
+import AdminProductsList from "./page/Admin/AdminProductsList";
 
 function App() {
   return (
@@ -21,9 +23,11 @@ function App() {
      <Route path="/register" element={<Register />} />
      <Route path="/Dashboard" element={<Dashboard />} />
      <Route path="/login" element={<Login />} />
-     <Route path="/forgetpassword" element={<ForgetPassword/>} />
+     <Route path="/forget-password" element={<ForgetPassword/>} />
+     <Route path="/change-password" element={<ChangePassword/>}/>
      <Route path="/email-verify" element={<EmailVerify />} />
      <Route path="/addproduct" element={<Addproduct />} />
+     <Route path="/adminproductslist" element={<AdminProductsList />} />
     <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
     <Route path="/admin/users" element={<AdminUsers/>}/>
     <Route path="/admin/users/edit" element={<AdminEditUser />} />
