@@ -1,29 +1,48 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import imageavator from "../assets/imageavator.jpg"
+import { Button } from "@headlessui/react";
 
-export default function ({name, initial, selling, image, category, description}) {
+export default function ItemCard({id, name, initial, selling, image, category, description}) {
+  const addToCart = () => {
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const findItem = existingCart.find((item) => item.productID == id);
+    if(findItem) {
+      const updateCart = existingCart.map((item)=>item.productID == id ? {...item, quantity: item.quantity + 1} : item);
+      localStorage.setItem('cart', JSON.stringify(updateCart));
+      console.log(updateCart);
+    } else {
+      existingCart.push({
+        productID: id,
+        quantity: 1,
+      });
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+    }
+  }
   return (
     <>
       <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-        <a href="#">
+        <Link to={`/itemview?pid=${id}`}>
           <img
             class="p-8 rounded-t-lg"
               src={`http://laseappstore.test/${image}`||imageavator}
-            alt="product image"
+            alt={name || "product name"}
+            style={{height: "200px", width: "400px", objectFit: "cover"}}
           />
-        </a>
+        </Link>
         <div class="px-5 pb-5">
-          <a href="#">
+          <Link to={`/itemview?pid=${id}`}>
             <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              {name || `Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport`}
+              {name || "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport"}
             </h5>
             <li class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              {category || `Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport`}
+              {category || "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport"}
             </li>
             <li class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              {description || `Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport`}
+              {description || "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport"}
             </li>
-          </a>
+          </Link>
           <div class="flex items-center mt-2.5 mb-5">
             <div class="flex items-center space-x-1 rtl:space-x-reverse">
               <svg
@@ -84,12 +103,16 @@ export default function ({name, initial, selling, image, category, description})
               {selling.toLocaleString("en-NG", {style:"currency", currency:"NGN"}) || `$499`}
             </span>
             
-            <a
-              href="#"
+            <Button onClick={addToCart}
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Add to cart
-            </a>
+            </Button>
+            {/* <Link to={`/itemview?pid=${id}`}
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Add to cart
+            </Link> */}
           </div>
         </div>
       </div>
