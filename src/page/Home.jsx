@@ -21,8 +21,8 @@ export default function Home() {
     {console.log(products)}
     <section className='flex flex-wrap justify-start gap-4 p-4'>
 
-      {products.map((product) => (
-        <ItemCard key={product.id} id={product.id} name={product.product_name} initial={product.initial_price} selling={product.selling_price} image={product.product_image} category={product.product_category} description={product.product_description}/>
+      {products.map((product, index) => (
+        <ItemCard key={index} id={product.product_id} name={product.product_name} initial={product.initial_price} selling={product.selling_price} image={product.product_image} category={product.product_category} description={product.product_description}/>
       ))}
       {/* <ItemCard />
       <ItemCard />

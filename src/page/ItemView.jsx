@@ -48,13 +48,13 @@ export default function ItemView() {
 
             <div className="mt-6 sm:mt-8 lg:mt-0">
               <span
-                class={
-                  item.product_quantity < 0
+                className={
+                  item.product_quantity > 0
                     ? `bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300`
                     : `bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:trext-red-300`
                 }
               >
-                {item.product_quantity < 0
+                {item.product_quantity > 0
                   ? "In_Stock " + item.product_quantity
                   : "Out_Stock"}
               </span>
@@ -145,7 +145,7 @@ export default function ItemView() {
                 </div>
               </div>
 
-              <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
+              <p className=" line-through text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
                 {new Intl.NumberFormat("en-NG", {
                   style: "currency",
                   currency: "NGN",
