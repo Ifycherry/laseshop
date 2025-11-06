@@ -14,9 +14,9 @@ export default function Cart() {
 
       const newItem = []
        cart.forEach((item, index)=>{
-        const prod = produces.find(items => items.product_id === item.productID);
+        const prod = produces.find((items) => items.product_id === item.productID);
        
-        newItem.push(prod);
+        newItem.push({produce:prod, q:item.quantity});
       })
       setProducts(newItem);
     }
@@ -43,14 +43,14 @@ export default function Cart() {
                       <Link to="" className="shrink-0 md:order-1">
                         <img
                           className="h-20 w-20 dark:hidden"
-                          src={`http://laseappstore.test/${item.product_image}` || `https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg`}
-                          alt={item.product_name || "products"}
+                          src={`http://laseappstore.test/${item.produce.product_image}` || `https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg`}
+                          alt={item.produce.product_name || "products"}
 
                         />
                         <img
                           className="hidden h-20 w-20 dark:block"
-                          src={`http://laseappstore.test/${item.product_image}` || `https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg`}
-                          alt={item.product_name || "products"}
+                          src={`http://laseappstore.test/${item.produce.product_image}` || `https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg`}
+                          alt={item.produce.product_name || "products"}
                         />
                       </Link>
   
@@ -87,7 +87,7 @@ export default function Cart() {
                             data-input-counter
                             className="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white"
                             placeholder=""
-                            value="2"
+                            value={item.q}
                             required
                           />
                           <button
@@ -115,7 +115,7 @@ export default function Cart() {
                         </div>
                         <div className="text-end md:order-4 md:w-32">
                           <p className="text-base font-bold text-gray-900 dark:text-white">
-                            {item.selling_price.toLocaleString('en-NG', {style:'currency', currency:'NGN'})}
+                            {item.produce.selling_price.toLocaleString('en-NG', {style:'currency', currency:'NGN'})}
                           
                           </p>
                         </div>
@@ -126,7 +126,7 @@ export default function Cart() {
                           to=""
                           className="text-base font-medium text-gray-900 hover:underline dark:text-white"
                         >
-                          {item.product_name || `PC system All in One APPLE iMac (2023) mqrq3ro/a, Apple M3, 24" Retina 4.5K, 8GB, SSD 256GB, 10-core GPU,Keyboard layout INT`}
+                          {item.produce.product_name || `PC system All in One APPLE iMac (2023) mqrq3ro/a, Apple M3, 24" Retina 4.5K, 8GB, SSD 256GB, 10-core GPU,Keyboard layout INT`}
                         </Link>
   
                         <div className="flex items-center gap-4">

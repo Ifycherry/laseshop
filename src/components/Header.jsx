@@ -47,7 +47,9 @@
 
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import {Link} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   Dialog,
   DialogPanel,
@@ -69,7 +71,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import { Link } from 'react-router-dom'
+
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -88,11 +90,11 @@ export default function Header() {
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // const [updateCart, setUpdateCart] = useState([]);
-  // useEffect(() => {
-  //   const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  //   setUpdateCart(cart);
-  // }, []);
+  const [updateCart, setUpdateCart] = useState([]);
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    setUpdateCart(cart);
+  }, []);
   
 
   return (
@@ -139,10 +141,11 @@ export default function Header() {
                       <item.icon aria-hidden="true" className="size-6 text-gray-400 group-hover:text-white" />
                     </div>
                     <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-white">
+                      <Link to={item.href} className="block font-semibold text-white">
                         {item.name}
                         <span className="absolute inset-0" />
-                      </a>
+                      </Link>
+                      
                       <p className="mt-1 text-gray-400">{item.description}</p>
                     </div>
                   </div>
@@ -150,21 +153,23 @@ export default function Header() {
               </div>
               <div className="grid grid-cols-2 divide-x divide-white/10 bg-gray-700/50">
                 {callsToAction.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     className="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-white hover:bg-gray-700/50"
                   >
                     <item.icon aria-hidden="true" className="size-5 flex-none text-gray-500" />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </PopoverPanel>
           </Popover>
 
-          <Link to="/cart" className="text-sm/6 font-semibold text-white">
+          <Link to="/cart" className="relative pe-4 text-sm/6 font-semibold text-white">
             Cart
+            <span className="absolute top-0 inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-red-800 bg-red-200 rounded-full">{updateCart.length || 0}</span>
+
           </Link>
           <Link to="" className="text-sm/6 font-semibold text-white">
             Marketplace
@@ -174,9 +179,9 @@ export default function Header() {
           </Link>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link to="/login" className="text-sm/6 font-semibold text-white">
+          <NavLink to="/login" className="text-sm/6 font-semibold text-white">
             Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
+          </NavLink>
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
