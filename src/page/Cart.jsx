@@ -5,12 +5,19 @@ import axios from "axios";
 
 export default function Cart() {
   const [products, setProducts] = useState([]);
+  const [cost, setCost] = useState(0);
+  const [tax, setTax] = useState(0)
+  const [total, setTotal] = useState(0)
+
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   // console.log(cart);
   useEffect(() => {
     const fetchData= async () => {
       const response = await axios.get("http://laseappstore.test/api/allproduct");
       const produces = response.data.products;
+
+      console.log("Produces", produces)
+      console.log("Cart", cart)
 
       const newItem = []
        cart.forEach((item, index)=>{
@@ -19,9 +26,25 @@ export default function Cart() {
         newItem.push({produce:prod, q:item.quantity});
       })
       setProducts(newItem);
+      console.log("New Item", newItem);
+
+      let newCost = 0
+      newItem.forEach(item=> {
+        // console.log(item)
+        let cost = item.produce.selling_price * item.q
+        newCost+= cost
+        // console.log(cost)
+      })
+      setCost(newCost);
+      let newTax = (7.5 / 100) * newCost;
+      setTax(newTax);
+      let newTotal = newCost + newTax;
+      setTotal(newTotal)
+
     }
     fetchData();
   },[]);
+
   console.log(products);
   return (
     <>
@@ -59,7 +82,7 @@ export default function Cart() {
                       </label>
                       <div className="flex items-center justify-between md:order-3 md:justify-end">
                         <div className="flex items-center">
-                          <button
+                          <button 
                             type="button"
                             id="decrement-button"
                             data-input-counter-decrement="counter-input"
@@ -90,7 +113,7 @@ export default function Cart() {
                             value={item.q}
                             required
                           />
-                          <button
+                          <button 
                             type="button"
                             id="increment-button"
                             data-input-counter-increment="counter-input"
@@ -113,10 +136,15 @@ export default function Cart() {
                             </svg>
                           </button>
                         </div>
+                
                         <div className="text-end md:order-4 md:w-32">
                           <p className="text-base font-bold text-gray-900 dark:text-white">
                             {item.produce.selling_price.toLocaleString('en-NG', {style:'currency', currency:'NGN'})}
-                          
+                          </p>
+                        </div>
+                        <div className="text-end md:order-4 md:w-32">
+                          <p className="text-base font-bold text-gray-900 dark:text-white">
+                            {Number(item.q*item.produce.selling_price).toLocaleString('en-NG', {style:'currency', currency:'NGN'})}
                           </p>
                         </div>
                       </div>
@@ -199,11 +227,11 @@ export default function Cart() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <dl className="flex items-center justify-between gap-4">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                        Original price
+                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400 ">
+                        Cost
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $7,592.00
+                        {cost.toLocaleString('en-NG', {style: 'currency', currency: 'NGN'})}
                       </dd>
                     </dl>
 
@@ -230,7 +258,7 @@ export default function Cart() {
                         Tax
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $799
+                        {tax.toLocaleString('en-NG', {style: 'currency', currency: 'NGN'})}
                       </dd>
                     </dl>
                   </div>
@@ -240,7 +268,7 @@ export default function Cart() {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      $8,191.00
+                     {total.toLocaleString('en-NG', {style: 'currency', currency: 'NGN'})}
                     </dd>
                   </dl>
                 </div>
@@ -313,5 +341,6 @@ export default function Cart() {
         </div>
       </section>
     </>
+  
   );
 }
