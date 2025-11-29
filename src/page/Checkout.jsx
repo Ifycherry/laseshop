@@ -1,0 +1,158 @@
+import React, { useEffect, useState } from "react";
+import Header from "../components/Header";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import PaystackButton from "../components/PaystackButton";
+
+export default function Checkout() {
+  const [products, setProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [overalltotal, setOverallTotal] = useState(0);
+  const [addresses, setAddresses] = useState([]);
+  const [addressId, setAddressId] = useState(null);
+  const authToken = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const email = user.email;
+  const date = new Date();
+  const randNum = Math.ceil(Math.random() * 1000);
+  const order_ref = `order_${date.getFullYear()}${
+    date.getMonth() + 1
+  }${date.getDate()}${randNum}`;
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  console.log("Cart items in checkout:", cart);
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      const response = await axios.get(
+        "http://laseappstore.test/api/getaddress",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setAddresses(response.data.address);
+    };
+
+    fetchAddress();
+  }, [authToken]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        "http://laseappstore.test/api/allproduct"
+      );
+      const produces = response.data.products;
+
+      console.log("Produces", produces);
+      console.log("Cart", cart);
+
+      const newItem = [];
+      cart.forEach((item, index) => {
+        const prod = produces.find(
+          (items) => items.product_id === item.productID
+        );
+
+        newItem.push({ produce: prod, q: item.quantity });
+      });
+      setProducts(newItem);
+      console.log("New Item", newItem);
+
+      let newTotal = 0;
+      newItem.forEach((item) => {
+        // console.log(item)
+        let cost = item.produce.selling_price * item.q;
+        newTotal += cost;
+        // console.log(cost)
+      });
+      setTotalPrice(newTotal);
+      let newTax = (7.5 / 100) * newTotal;
+      setTax(newTax);
+      let overall = newTotal + newTax;
+      setOverallTotal( overall);
+    };
+
+    fetchData();
+  }, []);
+ // console.log("Total Price:", overalltotal)
+  const changeAddressId = (e) => {
+    if (e.target.checked) {
+      setAddressId(e.target.value);
+    }
+  };
+  return (
+    <>
+      {/* {console.log(addresses)} */}
+
+      <Header />
+      <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+        <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
+            Checkout
+          </h2>
+          <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+            <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+              <div className="space-y-6">
+                {addresses.length === 0 ? (
+                  <p className="text-gray-500 ">
+                    No addresses found. Please add an address before proceeding
+                    to checkout.
+                  </p>
+                ) : (
+                  addresses.map((address) => (
+                    <>
+                      <div
+                        key={address.id}
+                        className="rounded-lg border border-gray-200 p-4 shadow-sm dark:border-gray-700 sm:p-6 lg:p-8 mb-4 flex gap-4 items-center"
+                      >
+                        <input
+                          type="radio"
+                          name="address"
+                          value={address.id}
+                          onClick={(e) => changeAddressId(e)}
+                        />
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white ">
+                          {address.address}, {address.city}, {address.state},{" "}
+                          {""}
+                          {address.country} - {address.postal_code} <br />
+                          Contact: {address.contact_name || "N/A"} (
+                          {address.contact_phone || "N/A"})
+                        </h3>
+                      </div>
+                    </>
+                  ))
+                )}
+
+                <div className="flex gap-4">
+                  <Link
+                    to="/add-address"
+                    className="inline-block rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700"
+                  >
+                    Add New Address
+                  </Link>
+                </div>
+                {/* <div className="">
+                  <Link
+                    to=""
+                    className="inline-block rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700"
+                  >
+                    Proceed to Payment
+                  </Link>
+                </div> */}
+                <PaystackButton
+                amt={overalltotal}
+                address_id={addressId}
+                order_ref={order_ref}
+                email={email}
+                 />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

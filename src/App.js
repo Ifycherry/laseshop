@@ -4,8 +4,10 @@ import Cart from "./page/Cart";
 import Register from "./page/Register";
 import Login from "./page/Login";
 import ItemView from "./page/ItemView";
+import Checkout from "./page/Checkout";
 import Dashboard from "./page/Dashboard";
 import Addproduct from "./page/Addproduct";
+import AddAddress from "./page/AddAddress";
 import EmailVerify from "./page/EmailVerify";
 import AdminDashboard from "./page/Admin/AdminDashboard";
 import AdminUsers from "./page/Admin/AdminUsers";
@@ -23,6 +25,7 @@ function App() {
     <Routes>
      <Route path="/" element={<Home />} />
      <Route path="/cart" element={<Cart />} />
+     <Route path="/checkout" element={<Checkout />} />
      <Route path="/register" element={<Register />} />
      <Route path="/Dashboard" element={<Dashboard />} />
      <Route path="/login" element={<Login />} />
@@ -31,10 +34,12 @@ function App() {
      <Route path="/change-password" element={<ChangePassword/>}/>
      <Route path="/email-verify" element={<EmailVerify />} />
      <Route path="/addproduct" element={<Addproduct />} />
+      <Route path="/add-address" element={<AddAddress />} />
      <Route path="/admin/productslist" element={<AdminProductsList />} />
     <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
     <Route path="/admin/users" element={<AdminUsers/>}/>
     <Route path="/admin/users/edit" element={<AdminEditUser />} />
+  
     </Routes>
     </BrowserRouter>
     </>

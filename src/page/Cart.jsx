@@ -5,9 +5,9 @@ import axios from "axios";
 
 export default function Cart() {
   const [products, setProducts] = useState([]);
-  const [cost, setCost] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [tax, setTax] = useState(0)
-  const [total, setTotal] = useState(0)
+  const [overalltotal, setOverallTotal] = useState(0)
 
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   // console.log(cart);
@@ -20,32 +20,34 @@ export default function Cart() {
       console.log("Cart", cart)
 
       const newItem = []
-       cart.forEach((item, index)=>{
+       cart.forEach((item, index)=> {
         const prod = produces.find((items) => items.product_id === item.productID);
        
         newItem.push({produce:prod, q:item.quantity});
-      })
+      });
       setProducts(newItem);
       console.log("New Item", newItem);
 
-      let newCost = 0
-      newItem.forEach(item=> {
+      let newTotal = 0
+      newItem.forEach(item =>{
         // console.log(item)
         let cost = item.produce.selling_price * item.q
-        newCost+= cost
+        newTotal += cost;
         // console.log(cost)
       })
-      setCost(newCost);
-      let newTax = (7.5 / 100) * newCost;
+      setTotalPrice(newTotal);
+      let newTax = (7.5 / 100) * newTotal;
       setTax(newTax);
-      let newTotal = newCost + newTax;
-      setTotal(newTotal)
+      let overall = newTotal + newTax;
+      setOverallTotal(overall)
 
-    }
+    };
+
     fetchData();
-  },[]);
+  }, []);
+ ;
 
-  console.log(products);
+ // console.log(products);
   return (
     <>
       <Header />
@@ -60,20 +62,21 @@ export default function Cart() {
             <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
               <div className="space-y-6">
                 {cart.length > 0 ? (
-                  products.map((item, index) => (
-                  <div key={index} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
+                  products.map((item) => (
+                  <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
                     <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                      <Link to="" className="shrink-0 md:order-1">
+                      <Link to="#" className="shrink-0 md:order-1">
                         <img
                           className="h-20 w-20 dark:hidden"
-                          src={`http://laseappstore.test/${item.produce.product_image}` || `https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg`}
-                          alt={item.produce.product_name || "products"}
-
+                          src={`http://laseappstore.test/${item.produce.product_image}` || "https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"}
+                          alt=
+                          {item.produce.product_name || "Product"}
                         />
                         <img
                           className="hidden h-20 w-20 dark:block"
-                          src={`http://laseappstore.test/${item.produce.product_image}` || `https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg`}
-                          alt={item.produce.product_name || "products"}
+                          src={`http://laseappstore.test/${item.produce.product_image}` || "https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"}
+                          alt=
+                         {item.produce.product_name || "Product"}
                         />
                       </Link>
   
@@ -144,7 +147,7 @@ export default function Cart() {
                         </div>
                         <div className="text-end md:order-4 md:w-32">
                           <p className="text-base font-bold text-gray-900 dark:text-white">
-                            {Number(item.q*item.produce.selling_price).toLocaleString('en-NG', {style:'currency', currency:'NGN'})}
+                            {Number(item.q * item.produce.selling_price).toLocaleString('en-NG', {style:'currency', currency:'NGN'})}
                           </p>
                         </div>
                       </div>
@@ -212,7 +215,8 @@ export default function Cart() {
                 ))
               ) : ( 
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl"
-                >No Item   Added ...
+                >
+                  No Item   Added ...
                 </h2>
               )} 
               </div>
@@ -231,7 +235,7 @@ export default function Cart() {
                         Cost
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        {cost.toLocaleString('en-NG', {style: 'currency', currency: 'NGN'})}
+                        {totalPrice.toLocaleString('en-NG', {style: 'currency', currency: 'NGN'})}
                       </dd>
                     </dl>
 
@@ -268,13 +272,13 @@ export default function Cart() {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                     {total.toLocaleString('en-NG', {style: 'currency', currency: 'NGN'})}
+                     {overalltotal.toLocaleString('en-NG', {style: 'currency', currency: 'NGN'})}
                     </dd>
                   </dl>
                 </div>
 
-                <Link
-                  to=""
+                <Link 
+                to="/checkout"
                   className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
                   Proceed to Checkout
