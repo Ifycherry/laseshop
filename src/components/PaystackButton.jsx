@@ -1,5 +1,7 @@
 import { useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 const PaystackButton = ({
   amt,
   order_ref,
@@ -12,6 +14,9 @@ const PaystackButton = ({
   const user = JSON.parse(localStorage.getItem("user")); // get user info
   const authToken = localStorage.getItem("token"); // get auth token
   const cart = JSON.parse(localStorage.getItem("cart")) || []; // get cart item
+  const navigate = useNavigate();
+   
+   
 
   // function to create order item in the backend
 
@@ -40,6 +45,7 @@ const PaystackButton = ({
      const fetchData= async () => {
       const response = await axios.get("http://laseappstore.test/api/allproduct");
       const produces = response.data.products;
+      
 
       console.log("Produces", produces)
       console.log("Cart", cart)
@@ -86,6 +92,7 @@ const PaystackButton = ({
 
   const payWithPaystack = () => {
     // const ref = `PAYSTACK-${Date.now()}`;
+    
     const handler = window.PaystackPop.setup({
       key:
         paystackPublicKey || "pk_test_00fcab1c359248e7c131a34095afa5601eefab4e",
@@ -100,7 +107,9 @@ const PaystackButton = ({
         console.log(response);
         console.log(address_id);
         if (response.status === "success") {
-          completePayment(response.reference)
+          completePayment(response.reference);
+          navigate('/');
+          localStorage.removeItem("cart");
         }
         onSuccess(response);
       },
